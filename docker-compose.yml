@@ -1,0 +1,18 @@
+name: nginx-file-upload
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: no
+    ports:
+      - target: 80
+        published: ${NGINX_HTTP:-8097}
+    environment:
+      conf: /etc/nginx/conf.d
+      in_docker: true
+    volumes:
+      - "./conf:/etc/nginx/conf.d"
+      # - "./upload:/var/spool/upload:rw"
+      # bind mounting the upload folder adds permissions complexity...
+      - "./configure.sh:/bin/configure"
+      - "./test.sh:/bin/test-upload"
